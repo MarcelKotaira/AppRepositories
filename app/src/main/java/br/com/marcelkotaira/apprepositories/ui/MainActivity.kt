@@ -11,6 +11,7 @@ import br.com.marcelkotaira.apprepositories.core.createProgressDialog
 import br.com.marcelkotaira.apprepositories.core.hideSoftKeyboard
 import br.com.marcelkotaira.apprepositories.databinding.ActivityMainBinding
 import br.com.marcelkotaira.apprepositories.presentation.MainViewModel
+import br.com.marcelkotaira.apprepositories.util.RepoShare
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
@@ -39,6 +40,9 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
                 is MainViewModel.State.Success -> {
                     dialog.dismiss()
                     adapter.submitList(it.list)
+                    adapter.listenerShare = { url ->
+                        RepoShare.shareIntent(this@MainActivity, url)
+                    }
                 }
             }
         }

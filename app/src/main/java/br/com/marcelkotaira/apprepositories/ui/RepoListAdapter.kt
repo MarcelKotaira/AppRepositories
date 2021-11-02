@@ -1,5 +1,6 @@
 package br.com.marcelkotaira.apprepositories.ui
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -10,6 +11,8 @@ import br.com.marcelkotaira.apprepositories.databinding.ItemRepoBinding
 import com.bumptech.glide.Glide
 
 class RepoListAdapter : ListAdapter<Repo, RepoListAdapter.ViewHolder>(DiffCallback()) {
+
+    var listenerShare: (String) -> Unit = { }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -30,6 +33,11 @@ class RepoListAdapter : ListAdapter<Repo, RepoListAdapter.ViewHolder>(DiffCallba
             binding.tvRepoDescription.text = item.description
             binding.tvRepoLanguage.text = item.language
             binding.chipStar.text = item.stargazersCount.toString()
+
+            binding.cardRepo.setOnClickListener {
+                Log.d("ON_CLICK", "Repository: ${item.name}\nURL: ${item.htmlURL}")
+                listenerShare(item.htmlURL)
+            }
 
             Glide.with(binding.root.context)
                 .load(item.owner.avatarURL).into(binding.ivOwner)
